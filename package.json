@@ -5,5 +5,8 @@
   "type": "module",
   "devDependencies": {
     "eslint": "^8.39.0"
+  },
+  "scripts": {
+    "start": "rm -rf node_modules && yarn && node sharp.js"
   }
 }
