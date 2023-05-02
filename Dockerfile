@@ -2,9 +2,9 @@ FROM public.ecr.aws/docker/library/node:18-bullseye-slim
 
 RUN apt-get update && apt-get install -y build-essential pkg-config libglib2.0-dev libgirepository1.0-dev libexpat1-dev libtiff5-dev libgsf-1-dev build-essential autoconf automake libtool nasm unzip wget git pkg-config curl cmake meson
 
-# RUN apt-get install -y libglib2.0-dev
+RUN apt-get install -y libopenjp2-7-dev
 
-ARG OPENJPEG_VERSION=2.3.1
+ARG OPENJPEG_VERSION=2.4.0
 ARG OPENJPEG_URL=https://github.com/uclouvain/openjpeg/archive
 
 RUN wget ${OPENJPEG_URL}/v${OPENJPEG_VERSION}.tar.gz \
@@ -12,7 +12,7 @@ RUN wget ${OPENJPEG_URL}/v${OPENJPEG_VERSION}.tar.gz \
 	&& cd openjpeg-${OPENJPEG_VERSION} \
 	&& mkdir build \
 	&& cd build \
-	&& cmake .. \
+	&& cmake .. -DCMAKE_BUILD_TYPE=Release \
 	&& make \
 	&& make install 
 
@@ -35,8 +35,7 @@ ARG VIPS_URL=https://github.com/libvips/libvips/releases/download
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.xz \
 	&& tar xf vips-${VIPS_VERSION}.tar.xz \
 	&& cd vips-${VIPS_VERSION} \
-	&& meson setup build-dir \
+	&& meson setup build-dir -Djp2k=true -Dopenjpeg=enabled \
 	&& cd build-dir \
 	&& ninja \
-	&& ninja install \
-	&& ldconfig
+	&& ninja install
