@@ -38,4 +38,5 @@ RUN wget ${VIPS_URL}/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.xz \
 	&& meson setup build-dir -Djp2k=true -Dopenjpeg=enabled \
 	&& cd build-dir \
 	&& ninja \
-	&& ninja install
+	&& ninja install \
+	&& ldconfig
